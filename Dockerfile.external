@@ -31,7 +31,7 @@ COPY --from=singularity_builder /opt/singularity /opt/singularity
 COPY pipeline.sh /opt/pipeline/
 COPY supportFiles/Phila_NC_002942.fna /opt/pipeline/reference/
 COPY supportFiles/NC_002942.gff /opt/pipeline/reference/
-COPY entrypoint.sh /
+#COPY entrypoint.sh /
 
 RUN apk update \
     && apk add --no-cache \
@@ -40,11 +40,12 @@ RUN apk update \
         libseccomp \
         su-exec \
         bash \
-    && chmod u+s /opt/singularity/libexec/singularity/bin/starter-suid \
-    && chmod -R 755 /opt/pipeline \
-    && chmod 644 /etc/ssl/certs/*
+    && chmod -R 755 /opt/pipeline
+    #&& chmod u+s /opt/singularity/libexec/singularity/bin/starter-suid \
+    #&& chmod -R 755 /opt/pipeline \
+    #&& chmod 644 /etc/ssl/certs/*
 
 ENV PATH /opt/singularity/bin:$PATH
 
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+#ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 

@@ -103,6 +103,10 @@ while true; do
             OUTPUT=$2
             shift 2
             ;;
+        --threads)
+            THREADS=$2
+            shift 2
+            ;;
         --)
             shift
             break
@@ -124,6 +128,7 @@ echo "R1: ${R1}"
 echo "R2: ${R2}"
 echo "Isolate: ${ISOLATE}"
 echo "Output: ${OUTPUT}"
+echo "Threads: ${THREADS}"
 ## ****************************************************************************
 
 
@@ -228,6 +233,12 @@ OUTPUT_FULL=$(readlink -f "${OUTPUT}")
 OUTPUT_DIR=$(dirname "${OUTPUT_FULL}")
 OUTPUT_BASE=$(basename "${OUTPUT_FULL}")
 
+
+if [ -z "${THREADS}" ]; then
+    echo "Using default single thread"
+    echo
+    THREADS="1"
+fi
 ## ****************************************************************************
 
 
@@ -255,13 +266,13 @@ mkdir -p ${OUTPUT_FULL}/logs
 mkdir -p ${OUTPUT_FULL}/bowtie2-index
 
 echo '01) bowtie2 index'
-singularity -s exec -B ${REFERENCE_DIR}:/data -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/bowtie2:2.2.8--py35_2 bowtie2-build /data/${REFERENCE_BASE} /output/bowtie2-index/${REFERENCE_BASE} > ${OUTPUT_FULL}/logs/01-bowtie2-index.stdout 2> ${OUTPUT_FULL}/logs/01-bowtie2-index.stderr || { echo 'bowtie2 index failed'; exit 1; }
+singularity -s exec -B ${REFERENCE_DIR}:/data -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/bowtie2:2.2.8--py35_2 bowtie2-build /data/${REFERENCE_BASE} /output/bowtie2-index/${REFERENCE_BASE} -p ${THREADS}> ${OUTPUT_FULL}/logs/01-bowtie2-index.stdout 2> ${OUTPUT_FULL}/logs/01-bowtie2-index.stderr || { echo 'bowtie2 index failed'; exit 1; }
 
 ### Map Reads to Reference Legionella pneumophila Philadelphia genome
 mkdir -p ${OUTPUT_FULL}/map-sam
 
 echo '02) bowtie2 align'
-singularity -s exec -B ${R1_DIR}:/data1 -B ${R2_DIR}:/data2 -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/bowtie2:2.2.8--py35_2 bowtie2 -x /output/bowtie2-index/${REFERENCE_BASE} --very-sensitive-local --no-unal -a -1 /data1/${R1_BASE} -2 /data2/${R2_BASE} -S /output/map-sam/${ISOLATE}.sam > ${OUTPUT_FULL}/logs/02-bowtie2-align.stdout 2> ${OUTPUT_FULL}/logs/02-bowtie2-align.stdout || { echo 'bowtie2 align failed'; exit 1; }
+singularity -s exec -B ${R1_DIR}:/data1 -B ${R2_DIR}:/data2 -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/bowtie2:2.2.8--py35_2 bowtie2 -x /output/bowtie2-index/${REFERENCE_BASE} --very-sensitive-local --no-unal -a -1 /data1/${R1_BASE} -2 /data2/${R2_BASE} -S /output/map-sam/${ISOLATE}.sam -p ${THREADS}> ${OUTPUT_FULL}/logs/02-bowtie2-align.stdout 2> ${OUTPUT_FULL}/logs/02-bowtie2-align.stdout || { echo 'bowtie2 align failed'; exit 1; }
 
 ### Convert Sam to Bam File
 mkdir -p ${OUTPUT_FULL}/map-bam
