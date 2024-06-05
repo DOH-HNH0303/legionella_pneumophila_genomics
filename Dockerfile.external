@@ -45,10 +45,11 @@ RUN apk update \
 
 ENV PATH /opt/singularity/bin:$PATH
 # set working directory
-WORKDIR /data
 COPY pipeline.sh /root/
 COPY supportFiles/Phila_NC_002942.fna /root/reference/
 COPY supportFiles/NC_002942.gff /root/reference/
+WORKDIR /data
+
 
 #ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 
