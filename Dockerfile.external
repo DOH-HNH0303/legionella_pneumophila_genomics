@@ -46,6 +46,8 @@ RUN apk update \
     #&& chmod 644 /etc/ssl/certs/*
 
 ENV PATH /opt/singularity/bin:$PATH
+# set working directory
+WORKDIR /data
 
 #ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 
