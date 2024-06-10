@@ -16,6 +16,7 @@ usage () {
     echo "  --r2 => Reverse Reads"
     echo "  --isolate => Isolate to Process"
     echo "  --output => Output Directory"
+    echo "  --threads => Number of threads to run processes with"
     echo "  --help => Display this help message"
 }
 ## ****************************************************************************
