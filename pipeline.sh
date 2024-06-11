@@ -44,7 +44,7 @@ fi
 ## ****************************************************************************
 ## Command line options should match usage description
 OPTIONS=
-LONGOPTIONS=help,reference:,gff:,r1:,r2:,isolate:,output:,
+LONGOPTIONS=help,reference:,gff:,r1:,r2:,isolate:,output:,threads:,
 ## ****************************************************************************
 
 # -temporarily store output to be able to check for errors
