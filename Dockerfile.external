@@ -45,9 +45,9 @@ RUN apk update \
 
 ENV PATH /opt/singularity/bin:$PATH
 # set working directory
-COPY pipeline.sh pipeline.sh
-COPY supportFiles/Phila_NC_002942.fna Phila_NC_002942.fna
-COPY supportFiles/NC_002942.gff NC_002942.gff
+COPY pipeline.sh /home/pipeline.sh
+COPY supportFiles/Phila_NC_002942.fna /home/Phila_NC_002942.fna
+COPY supportFiles/NC_002942.gff home/NC_002942.gff
 WORKDIR /data
 
 
