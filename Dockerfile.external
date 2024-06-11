@@ -27,7 +27,7 @@ RUN apk update \
 FROM alpine:3.9
 
 COPY --from=singularity_builder /opt/singularity /opt/singularity
-
+USER root
 
 #COPY entrypoint.sh /
 
@@ -52,4 +52,3 @@ WORKDIR /data
 
 
 #ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
-
