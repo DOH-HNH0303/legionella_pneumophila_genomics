@@ -285,7 +285,7 @@ echo '04) samtools sort'
 singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools sort -o /output/map-bam/${ISOLATE}-sorted.bam -O bam /output/map-bam/${ISOLATE}.bam  -@ ${THREADS}> ${OUTPUT_FULL}/logs/04-samtools-sort.stdout 2> ${OUTPUT_FULL}/logs/04-samtools-sort.stderr || { echo 'samtools sort failed'; exit 1; }
 
 echo '05) samtools index'
-singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools index /output/map-bam/${ISOLATE}-sorted.bam  -nthreads ${THREADS} > ${OUTPUT_FULL}/logs/05-samtools-index.stdout 2> ${OUTPUT_FULL}/logs/05-samtools-index.stderr || { echo 'samtools index failed'; exit 1; }
+singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools index /output/map-bam/${ISOLATE}-sorted.bam > ${OUTPUT_FULL}/logs/05-samtools-index.stdout 2> ${OUTPUT_FULL}/logs/05-samtools-index.stderr || { echo 'samtools index failed'; exit 1; }
 
 mkdir -p ${OUTPUT_FULL}/variants
 
