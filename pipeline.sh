@@ -279,13 +279,13 @@ singularity -s exec -B ${R1_DIR}:/data1 -B ${R2_DIR}:/data2 -B ${OUTPUT_FULL}:/o
 mkdir -p ${OUTPUT_FULL}/map-bam
 
 echo '03) samtools view'
-singularity -s exec -B ${REFERENCE_DIR}:/data -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools view -bS -T /data/${REFERENCE_BASE} /output/map-sam/${ISOLATE}.sam -o /output/map-bam/${ISOLATE}.bam > ${OUTPUT_FULL}/logs/03-samtools-view.stdout 2> ${OUTPUT_FULL}/logs/03-samtools-view.stderr || { echo 'samtools view failed'; exit 1; }
+singularity -s exec -B ${REFERENCE_DIR}:/data -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools view -bS -T /data/${REFERENCE_BASE} /output/map-sam/${ISOLATE}.sam -o /output/map-bam/${ISOLATE}.bam -nthreads ${THREADS}> ${OUTPUT_FULL}/logs/03-samtools-view.stdout 2> ${OUTPUT_FULL}/logs/03-samtools-view.stderr || { echo 'samtools view failed'; exit 1; }
 
 echo '04) samtools sort'
-singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools sort -o /output/map-bam/${ISOLATE}-sorted.bam -O bam /output/map-bam/${ISOLATE}.bam > ${OUTPUT_FULL}/logs/04-samtools-sort.stdout 2> ${OUTPUT_FULL}/logs/04-samtools-sort.stderr || { echo 'samtools sort failed'; exit 1; }
+singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools sort -o /output/map-bam/${ISOLATE}-sorted.bam -O bam /output/map-bam/${ISOLATE}.bam  -nthreads ${THREADS}> ${OUTPUT_FULL}/logs/04-samtools-sort.stdout 2> ${OUTPUT_FULL}/logs/04-samtools-sort.stderr || { echo 'samtools sort failed'; exit 1; }
 
 echo '05) samtools index'
-singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools index /output/map-bam/${ISOLATE}-sorted.bam > ${OUTPUT_FULL}/logs/05-samtools-index.stdout 2> ${OUTPUT_FULL}/logs/05-samtools-index.stderr || { echo 'samtools index failed'; exit 1; }
+singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/samtools:1.3.1--3 samtools index /output/map-bam/${ISOLATE}-sorted.bam  -nthreads ${THREADS} > ${OUTPUT_FULL}/logs/05-samtools-index.stdout 2> ${OUTPUT_FULL}/logs/05-samtools-index.stderr || { echo 'samtools index failed'; exit 1; }
 
 mkdir -p ${OUTPUT_FULL}/variants
 
