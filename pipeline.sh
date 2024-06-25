@@ -303,11 +303,11 @@ singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/vcf
 
 ### GZip VCF file
 echo '09) bgzip'
-singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/htslib:1.9--h47928c2_5 bgzip /output/variants/${ISOLATE}-vcffilter.vcf > ${OUTPUT_FULL}/logs/09-bgzip.stdout 2> ${OUTPUT_FULL}/logs/09-bgzip.stderr || { echo 'bgzip failed'; exit 1; }
+singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/htslib:1.9--h47928c2_5 bgzip /output/variants/${ISOLATE}-vcffilter.vcf  -@ ${THREADS}> ${OUTPUT_FULL}/logs/09-bgzip.stdout 2> ${OUTPUT_FULL}/logs/09-bgzip.stderr || { echo 'bgzip failed'; exit 1; }
 
 ### Use Tabix command on Gzipped VCF file
 echo '10) tabix'
-singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/htslib:1.9--h47928c2_5 tabix -f -p vcf /output/variants/${ISOLATE}-vcffilter.vcf.gz > ${OUTPUT_FULL}/logs/10-tabix.stdout 2> ${OUTPUT_FULL}/logs/10-tabix.stderr || { echo 'tabix failed'; exit 1; }
+singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/htslib:1.9--h47928c2_5 tabix -f -p vcf /output/variants/${ISOLATE}-vcffilter.vcf.gz -@ ${THREADS} > ${OUTPUT_FULL}/logs/10-tabix.stdout 2> ${OUTPUT_FULL}/logs/10-tabix.stderr || { echo 'tabix failed'; exit 1; }
 
 mkdir -p ${OUTPUT_FULL}/consensus
 
