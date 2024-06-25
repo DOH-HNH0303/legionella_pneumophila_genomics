@@ -307,7 +307,7 @@ singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/hts
 
 ### Use Tabix command on Gzipped VCF file
 echo '10) tabix'
-singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/htslib:1.9--h47928c2_5 tabix -f -p vcf /output/variants/${ISOLATE}-vcffilter.vcf.gz -@ ${THREADS} > ${OUTPUT_FULL}/logs/10-tabix.stdout 2> ${OUTPUT_FULL}/logs/10-tabix.stderr || { echo 'tabix failed'; exit 1; }
+singularity -s exec -B ${OUTPUT_FULL}:/output docker://quay.io/biocontainers/htslib:1.9--h47928c2_5 tabix -f -p vcf /output/variants/${ISOLATE}-vcffilter.vcf.gz > ${OUTPUT_FULL}/logs/10-tabix.stdout 2> ${OUTPUT_FULL}/logs/10-tabix.stderr || { echo 'tabix failed'; exit 1; }
 
 mkdir -p ${OUTPUT_FULL}/consensus
 
