@@ -1,6 +1,6 @@
 # Legionella pneumophila in silico Serogroup Prediction
 
-Version: 0.3-WAPHL
+Version: v0.3-WAPHL
 
 This project contains a bioinformatics workflow and docker image to analyze Legionella pneumophila whole genome sequencing data to predict serogroup from short read sequences.
 
